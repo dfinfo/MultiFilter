@@ -1,0 +1,25 @@
+{
+  "name": "dfinfo/multi-filter",
+  "description": "Multi criteria filter",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Denis Fohl",
+      "email": "dev@df-info.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Dfinfo\\MultiFilter\\": ""
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.1"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.0-dev"
+    }
+  }
+}

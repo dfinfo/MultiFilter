@@ -9,7 +9,12 @@ class FilterFactory
 {
     /**
      * @param array $config
+     *
      * @return Filter
+     * @throws ConfigParameterNotFoundException
+     * @throws Exception\ConstraintViolationException
+     * @throws Exception\InvalidArgumentException
+     * @throws InvalidConfigParameterException
      */
     public static function create(array $config): Filter
     {
@@ -28,6 +33,13 @@ class FilterFactory
                 $criteria->setValue($criteriaConfig['value']);
             }
             $filter->addCriteria($key, $criteria);
+        }
+
+        if (!isset($config['filterStrategy'])) {
+            $filter->setFilterStrategy(new AndStrategy());
+        } else {
+            $strategy = new $config['filterStrategy'];
+            $filter->setFilterStrategy($strategy);
         }
 
         return $filter;

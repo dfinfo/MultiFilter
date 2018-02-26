@@ -5,6 +5,7 @@ namespace Dfinfo\MultiFilter;
 
 use Dfinfo\MultiFilter\Exception\ConstraintViolationException;
 use Dfinfo\MultiFilter\Exception\InvalidArgumentException;
+use Doctrine\ORM\QueryBuilder;
 
 class Criteria
 {
@@ -139,6 +140,46 @@ class Criteria
     public function hasDqlJoin()
     {
         return !is_null($this->dqlJoin);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        if ($this->getOperator() == 'isNull' || $this->getOperator() == 'isNotNull') {
+            return true;
+        }
+
+        return !is_null($this->getValue());
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param int          $parameter
+     *
+     * @return array
+     */
+    public function getFieldsExpr(QueryBuilder $qb, int $parameter)
+    {
+        $noValue    = ['isNull', 'isNotNull'];
+        $operator   = $this->getOperator();
+        $alias      = $qb->getRootAliases()[0];
+        $fields     = (is_array($this->getField())) ? $this->getField() : [$this->getField()];
+
+        $fieldsExpr = [];
+        if (in_array($operator, $noValue)) {
+            foreach ($fields as $field) {
+                $fieldsExpr[] = $qb->expr()->$operator($alias . '.' . $field);
+            }
+        } else {
+            foreach ($fields as $field) {
+                $fieldsExpr[] = $qb->expr()->$operator($alias . '.' . $field, '?' . $parameter);
+            }
+            $qb->setParameter($parameter, $this->getValue());
+        }
+
+        return $fieldsExpr;
     }
 
 }

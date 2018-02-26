@@ -6,7 +6,6 @@ namespace Dfinfo\MultiFilter;
 use Dfinfo\MultiFilter\Exception\InvalidArgumentException;
 use Dfinfo\MultiFilter\Exception\InvalidConfigParameterException;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Form\Form;
 
 class Filter
 {
@@ -14,61 +13,24 @@ class Filter
      * @var Criteria[]
      */
     protected $criterias;
+    /**
+     * @var FilterStrategy
+     */
+    protected $filterStrategy;
 
     /**
      * @param QueryBuilder $qb
      */
     public function apply(QueryBuilder $qb)
     {
-        $parameter  = 0;
-
-        foreach ($this->criterias as $criteria) {
-            if ($this->isActive($criteria)) {
-                $parameter +=1;
-                if ($criteria->hasDqlJoin()) {
-                    $join = $criteria->getDqlJoin();
-                    $qb->join('entity.' . $join['property'],
-                        $join['property'],
-                        'WITH',
-                        $join['property'] . '.' . $join['referencedColumnName'] . ' = ?' . $parameter);
-                        $qb->setParameter($parameter, $criteria->getValue());
-                } else {
-                    $fieldsExpr = $this->getFieldsExpr($criteria, $qb, $parameter);
-                    $qb->andWhere(
-                        call_user_func_array([$qb->expr(), 'orX'], $fieldsExpr)
-                    );
-                }
-            }
-        }
+        $this->getFilterStrategy()->apply($qb, $this);
     }
 
-    protected function getFieldsExpr(Criteria $criteria, QueryBuilder $qb, int $parameter)
-    {
-        $noValue    = ['isNull', 'isNotNull'];
-        $operator   = $criteria->getOperator();
-        $alias      = $qb->getRootAliases()[0];
-        $fields     = (is_array($criteria->getField())) ? $criteria->getField() : [$criteria->getField()];
-
-        $fieldsExpr = [];
-        if (in_array($operator, $noValue)) {
-            foreach ($fields as $field) {
-                $fieldsExpr[] = $qb->expr()->$operator($alias . '.' . $field);
-            }
-        } else {
-            foreach ($fields as $field) {
-                $fieldsExpr[] = $qb->expr()->$operator($alias . '.' . $field, '?' . $parameter);
-            }
-            $qb->setParameter($parameter, $criteria->getValue());
-        }
-
-        return $fieldsExpr;
-    }
-
-    public function setValuesFromForm(Form $form)
-    {
-
-    }
-
+    /**
+     * @param array $values
+     *
+     * @throws Exception\ConstraintViolationException
+     */
     public function setValuesFromArray(array $values)
     {
         foreach ($values as $key => $value) {
@@ -76,6 +38,12 @@ class Filter
         }
     }
 
+    /**
+     * @param $object
+     *
+     * @throws Exception\ConstraintViolationException
+     * @throws InvalidArgumentException
+     */
     public function setValuesFromObject($object)
     {
         if (!is_object($object)) {
@@ -91,6 +59,11 @@ class Filter
     }
 
     public function setValuesFromConfig()
+    {
+
+    }
+
+    public function setValuesFromForm()
     {
 
     }
@@ -127,19 +100,6 @@ class Filter
     }
 
     /**
-     * @param Criteria $criteria
-     * @return bool
-     */
-    protected function isActive(Criteria $criteria)
-    {
-        if ($criteria->getOperator() == 'isNull' || $criteria->getOperator() == 'isNotNull') {
-            return true;
-        }
-
-        return !is_null($criteria->getValue());
-    }
-
-    /**
      * @return Criteria[]
      */
     public function getCriterias(): array
@@ -153,6 +113,22 @@ class Filter
     public function setCriterias(array $criterias)
     {
         $this->criterias = $criterias;
+    }
+
+    /**
+     * @return FilterStrategy
+     */
+    public function getFilterStrategy(): FilterStrategy
+    {
+        return $this->filterStrategy;
+    }
+
+    /**
+     * @param FilterStrategy $filterStrategy
+     */
+    public function setFilterStrategy(FilterStrategy $filterStrategy): void
+    {
+        $this->filterStrategy = $filterStrategy;
     }
 
 }

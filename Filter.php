@@ -86,7 +86,7 @@ class Filter
      * @param string $key
      * @return Criteria
      */
-    public function getCriteria(string $key)
+    public function getCriteria($key)
     {
         return $this->criterias[$key];
     }
@@ -94,7 +94,7 @@ class Filter
     /**
      * @param string $key
      */
-    public function removeCriteria(string $key)
+    public function removeCriteria($key)
     {
         unset($this->criterias[$key]);
     }
@@ -102,7 +102,7 @@ class Filter
     /**
      * @return Criteria[]
      */
-    public function getCriterias(): array
+    public function getCriterias()
     {
         return $this->criterias;
     }
@@ -118,7 +118,7 @@ class Filter
     /**
      * @return FilterStrategy
      */
-    public function getFilterStrategy(): FilterStrategy
+    public function getFilterStrategy()
     {
         return $this->filterStrategy;
     }
@@ -126,7 +126,7 @@ class Filter
     /**
      * @param FilterStrategy $filterStrategy
      */
-    public function setFilterStrategy(FilterStrategy $filterStrategy): void
+    public function setFilterStrategy(FilterStrategy $filterStrategy)
     {
         $this->filterStrategy = $filterStrategy;
     }

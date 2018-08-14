@@ -16,7 +16,7 @@ class FilterFactory
      * @throws Exception\InvalidArgumentException
      * @throws InvalidConfigParameterException
      */
-    public static function create(array $config): Filter
+    public static function create(array $config)
     {
         self::validateConfig($config);
         $filter = new Filter();

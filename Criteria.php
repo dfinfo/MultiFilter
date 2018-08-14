@@ -64,7 +64,7 @@ class Criteria
     /**
      * @return string
      */
-    public function getOperator(): string
+    public function getOperator()
     {
         return $this->operator;
     }
@@ -73,7 +73,7 @@ class Criteria
      * @param string $operator
      * @throws InvalidArgumentException
      */
-    public function setOperator(string $operator)
+    public function setOperator($operator)
     {
         if (!in_array($operator, self::OPERATORS)) {
             throw new InvalidArgumentException();
@@ -111,7 +111,7 @@ class Criteria
     /**
      * @return array
      */
-    public function getDqlJoin(): array
+    public function getDqlJoin()
     {
         return $this->dqlJoin;
     }
@@ -160,7 +160,7 @@ class Criteria
      *
      * @return array
      */
-    public function getFieldsExpr(QueryBuilder $qb, int $parameter)
+    public function getFieldsExpr(QueryBuilder $qb, $parameter)
     {
         $noValue    = ['isNull', 'isNotNull'];
         $operator   = $this->getOperator();

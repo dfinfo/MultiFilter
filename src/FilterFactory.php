@@ -21,7 +21,7 @@ class FilterFactory
         self::validateConfig($config);
         $filter = new Filter();
 
-        foreach ($config['criterias'] as $key => $criteriaConfig) {
+        foreach ($config['criterias'] as $criteriaId => $criteriaConfig) {
             self::validateCriteriaConfig($criteriaConfig);
             $criteria = new Criteria();
             $criteria->setField($criteriaConfig['field']);
@@ -32,7 +32,7 @@ class FilterFactory
             if (array_key_exists('value', $criteriaConfig)) {
                 $criteria->setValue($criteriaConfig['value']);
             }
-            $filter->addCriteria($key, $criteria);
+            $filter->addCriteria($criteriaId, $criteria);
         }
 
         if (!isset($config['filterStrategy'])) {

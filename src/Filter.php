@@ -33,8 +33,8 @@ class Filter
      */
     public function setValuesFromArray(array $values)
     {
-        foreach ($values as $key => $value) {
-            $this->getCriteria($key)->setValue($value);
+        foreach ($values as $criteriasId => $value) {
+            $this->getCriteria($criteriasId)->setValue($value);
         }
     }
 
@@ -50,8 +50,8 @@ class Filter
             throw new InvalidArgumentException();
         }
 
-        foreach ($this->getCriterias() as $key => $criteria) {
-            $method = 'get' . ucfirst($key);
+        foreach ($this->getCriterias() as $criteriaId => $criteria) {
+            $method = 'get' . ucfirst($criteriaId);
             if (!is_null($object->$method())) {
                 $criteria->setValue($object->$method());
             }
@@ -69,34 +69,36 @@ class Filter
     }
 
     /**
-     * @param string $key
+     * @param string   $criteriaId
      * @param Criteria $criteria
+     *
      * @throws InvalidConfigParameterException
      */
-    public function addCriteria($key, Criteria $criteria)
+    public function addCriteria($criteriaId, Criteria $criteria)
     {
-        if (!is_string($key)) {
+        if (!is_string($criteriaId)) {
             throw new InvalidConfigParameterException('Invalid Dfinfo\MultiFilter config, criterias array keys must be strings');
         }
 
-        $this->criterias[$key] = $criteria;
+        $this->criterias[$criteriaId] = $criteria;
     }
 
     /**
-     * @param string $key
+     * @param string $criteriaId
+     *
      * @return Criteria
      */
-    public function getCriteria($key)
+    public function getCriteria($criteriaId)
     {
-        return $this->criterias[$key];
+        return $this->criterias[$criteriaId];
     }
 
     /**
-     * @param string $key
+     * @param string $criteriaId
      */
-    public function removeCriteria($key)
+    public function removeCriteria($criteriaId)
     {
-        unset($this->criterias[$key]);
+        unset($this->criterias[$criteriaId]);
     }
 
     /**

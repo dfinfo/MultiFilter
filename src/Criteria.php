@@ -9,18 +9,18 @@ use Doctrine\ORM\QueryBuilder;
 class Criteria
 {
     const OPERATORS = [
-        'eq',
-        'neq',
-        'lt',
-        'lte',
-        'gt',
-        'gte',
-        'isNull',
-        'isNotNull',
-        'in',
-        'notIn',
-        'like',
-        'notLike'
+        'eq'        => '=',
+        'neq'       => '!=',
+        'lt'        => '<',
+        'lte'       => '<=',
+        'gt'        => '>',
+        'gte'       => '>=',
+        'isNull'    => 'IS NULL',
+        'isNotNull' => 'IS NOT NULL',
+        'in'        => 'IN',
+        'notIn'     => 'NOT IN',
+        'like'      => 'LIKE',
+        'notLike'   => 'NOT LIKE',
     ];
     /**
      * @var mixed
@@ -78,7 +78,7 @@ class Criteria
      */
     public function setOperator($operator)
     {
-        if (!in_array($operator, self::OPERATORS)) {
+        if (!array_key_exists($operator, self::OPERATORS)) {
             throw new InvalidArgumentException();
         }
         $this->operator = $operator;
@@ -127,8 +127,7 @@ class Criteria
     {
         if (!is_array($dqlJoin)
             || !array_key_exists('property', $dqlJoin)
-            || !array_key_exists('referencedColumnName', $dqlJoin))
-        {
+            || !array_key_exists('referencedColumnName', $dqlJoin)) {
             throw new InvalidArgumentException(
                 'dqlJoin doit être un tableau contenant property et referencedColumnName'
             );
@@ -185,4 +184,19 @@ class Criteria
         return $fieldsExpr;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 }

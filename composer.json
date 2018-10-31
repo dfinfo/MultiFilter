@@ -1,7 +1,7 @@
 {
   "name": "dfinfo/multi-filter",
+  "type": "library",
   "description": "Multi criteria filter",
-  "minimum-stability": "dev",
   "license": "proprietary",
   "authors": [
     {
@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Dfinfo\\MultiFilter\\": ""
+      "Dfinfo\\MultiFilter\\": "src"
     }
   },
   "require": {

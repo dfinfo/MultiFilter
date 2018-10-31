@@ -18,6 +18,12 @@ class FilterFactoryTest extends TestCase
      */
     protected $filter;
 
+    /**
+     * @throws ConfigParameterNotFoundException
+     * @throws InvalidConfigParameterException
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function setUp()
     {
         $config = [
@@ -36,6 +42,12 @@ class FilterFactoryTest extends TestCase
         $this->filter = FilterFactory::create($config);
     }
 
+    /**
+     * @throws ConfigParameterNotFoundException
+     * @throws InvalidConfigParameterException
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testCriteriaKeyIsString()
     {
         $this->expectException(InvalidConfigParameterException::class);
@@ -51,6 +63,12 @@ class FilterFactoryTest extends TestCase
         ]);
     }
 
+    /**
+     * @throws ConfigParameterNotFoundException
+     * @throws InvalidConfigParameterException
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testConfigCriteriaWhithoutOperator()
     {
         $this->expectException(ConfigParameterNotFoundException::class);
@@ -65,6 +83,12 @@ class FilterFactoryTest extends TestCase
 
     }
 
+    /**
+     * @throws ConfigParameterNotFoundException
+     * @throws InvalidConfigParameterException
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testConfigCriteriaWhithoutField()
     {
         $this->expectException(ConfigParameterNotFoundException::class);
@@ -78,6 +102,9 @@ class FilterFactoryTest extends TestCase
         ]);
     }
 
+    /**
+     *
+     */
     public function testFilterHasCriterias()
     {
         $this->assertEquals(2, count($this->filter->getCriterias()));

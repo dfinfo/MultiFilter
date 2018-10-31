@@ -20,6 +20,10 @@ class CriteriaTest extends TestCase
         $this->criteria = new Criteria();
     }
 
+    /**
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testValueForLike()
     {
         $this->criteria->setOperator('like');
@@ -30,6 +34,10 @@ class CriteriaTest extends TestCase
         $this->assertEquals('%test%', $this->criteria->getValue());
     }
 
+    /**
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testValueNormal()
     {
         $this->criteria->setOperator('eq');
@@ -37,18 +45,28 @@ class CriteriaTest extends TestCase
         $this->assertEquals('test', $this->criteria->getValue());
     }
 
+    /**
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testOperatorUnknown()
     {
         $this->expectException(\Dfinfo\MultiFilter\Exception\InvalidArgumentException::class);
         $this->criteria->setOperator('unknow');
     }
 
+    /**
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testOperatorValid()
     {
         $this->criteria->setOperator('eq');
         $this->assertEquals('eq', $this->criteria->getOperator());
     }
 
+    /**
+     * @throws \Dfinfo\MultiFilter\Exception\ConstraintViolationException
+     * @throws \Dfinfo\MultiFilter\Exception\InvalidArgumentException
+     */
     public function testCantSetValueWhenOperatorIsNull()
     {
         $this->criteria->setOperator('isNull');

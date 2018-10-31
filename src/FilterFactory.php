@@ -24,6 +24,7 @@ class FilterFactory
         foreach ($config['criterias'] as $criteriaId => $criteriaConfig) {
             self::validateCriteriaConfig($criteriaConfig);
             $criteria = new Criteria();
+            $criteria->setId($criteriaId);
             $criteria->setField($criteriaConfig['field']);
             $criteria->setOperator($criteriaConfig['operator']);
             if (array_key_exists('dqlJoin', $criteriaConfig)) {

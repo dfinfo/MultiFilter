@@ -2,7 +2,6 @@
 
 namespace Dfinfo\MultiFilter;
 
-
 use Dfinfo\MultiFilter\Exception\ConstraintViolationException;
 use Dfinfo\MultiFilter\Exception\InvalidArgumentException;
 use Doctrine\ORM\QueryBuilder;
@@ -23,6 +22,10 @@ class Criteria
         'like',
         'notLike'
     ];
+    /**
+     * @var mixed
+     */
+    protected $id;
     /**
      * @var string|array
      */

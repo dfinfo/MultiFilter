@@ -33,6 +33,9 @@ class FilterFactory
             if (array_key_exists('value', $criteriaConfig)) {
                 $criteria->setValue($criteriaConfig['value']);
             }
+            if (array_key_exists('valueMustBeQuoted', $criteriaConfig)) {
+                $criteria->setValueMustBeQuoted($criteriaConfig['valueMustBeQuoted']);
+            }
             $filter->addCriteria($criteriaId, $criteria);
         }
 

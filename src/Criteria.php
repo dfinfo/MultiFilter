@@ -42,6 +42,26 @@ class Criteria
      * @var array
      */
     protected $dqlJoin;
+    /**
+     * @var bool
+     */
+    protected $valueMustBeQuoted = true;
+
+    /**
+     * @return bool
+     */
+    public function valueMustBeQuoted(): ?bool
+    {
+        return $this->valueMustBeQuoted;
+    }
+
+    /**
+     * @param bool $valueMustBeQuoted
+     */
+    public function setValueMustBeQuoted(?bool $valueMustBeQuoted): void
+    {
+        $this->valueMustBeQuoted = $valueMustBeQuoted;
+    }
 
     /**
      * @return string|array
@@ -178,6 +198,10 @@ class Criteria
             foreach ($fields as $field) {
                 $fieldsExpr[] = $qb->expr()->$operator($alias . '.' . $field, '?' . $parameter);
             }
+            // TODO : modifier pour ne quoter la valeur que si $criteria->valueMustBeQuoted
+//  à tester  if (is_numeric($this->getValue())) {
+//                $qb->setParameter($parameter, $this->getValue(), \Doctrine\DBAL\ParameterType::INTEGER);
+//            }
             $qb->setParameter($parameter, $this->getValue());
         }
 

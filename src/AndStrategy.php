@@ -25,9 +25,9 @@ class AndStrategy implements FilterStrategy
                 if ($criteria->hasDqlJoin()) {
                     $join = $criteria->getDqlJoin();
                     $qb->join('entity.' . $join['property'],
-                        $join['property'],
+                        $criteria->getId(),
                         'WITH',
-                        $join['property'] . '.' . $join['referencedColumnName'] . ' = ?' . $parameter);
+                        $criteria->getId() . '.' . $join['referencedColumnName'] . ' = ?' . $parameter);
                     // TODO : modifier pour ne quoter la valeur que si $criteria->valueMustBeQuoted
                     $qb->setParameter($parameter, $criteria->getValue());
                 } else {
